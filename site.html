@@ -757,6 +757,41 @@
     .tab:hover:not(.active) {
       border-bottom: 3px solid var(--primary-light);
     }
+/* أضف هذه الأنماط في قسم الـ style */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  
+  .car-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 10px;
+  }
+  
+  .car-row td {
+    display: block;
+    width: 100% !important;
+    padding: 5px 0;
+    border: none;
+  }
+  
+  .mobile-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--dark);
+    margin-bottom: 3px;
+    display: block;
+  }
+  
+  .car-row .btn {
+    margin-top: 10px;
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body>
@@ -825,47 +860,60 @@
             <input type="date" id="date" class="form-control" required>
           </div>
           
-          <div class="cars-form">
-            <div class="table-responsive">
-              <table class="cars-table">
-                <thead>
-                  <tr>
-                    <th>اسم السائق *</th>
-                    <th>رقم الشهادة *</th>
-                    <th>اسم المدرسة *</th>
-                    <th>هاتف المدير</th>
-                    <th>ملاحظة</th>
-                    <th style="width: 50px;"></th>
-                  </tr>
-                </thead>
-                <tbody id="carsContainer">
-                  <!-- العناصر ستضاف هنا ديناميكيًا -->
-                  <tr>
-                    <td>
-                      <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق" required>
-                    </td>
-                    <td><input type="text" class="form-control certificate-number" placeholder="رقم الشهادة" required></td>
-                    <td><input type="text" class="form-control school-name" placeholder="اسم المدرسة" required></td>
-                    <td><input type="text" class="form-control manager-phone" placeholder="هاتف المدير"></td>
-                    <td><input type="text" class="form-control notes" placeholder="ملاحظة"></td>
-                    <td>
-                      <button type="button" class="btn btn-danger btn-sm remove-car" disabled>
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            
-            <datalist id="driversList">
-              <!-- سيتم ملؤه ديناميكيًا من ورقة الموظفين -->
-            </datalist>
-            
-            <button type="button" id="addCarBtn" class="btn btn-outline">
-              <i class="fas fa-plus"></i> إضافة سجل
+<div class="cars-form">
+  <div class="table-responsive">
+    <table class="cars-table">
+      <thead class="desktop-only">
+        <tr>
+          <th>اسم السائق *</th>
+          <th>رقم الشهادة *</th>
+          <th>اسم المدرسة *</th>
+          <th>هاتف المدير</th>
+          <th>ملاحظة</th>
+          <th style="width: 50px;"></th>
+        </tr>
+      </thead>
+      <tbody id="carsContainer">
+        <!-- العناصر ستضاف هنا ديناميكيًا -->
+        <tr class="car-row">
+          <td>
+            <div class="mobile-label">اسم السائق *</div>
+            <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق" required>
+          </td>
+          <td>
+            <div class="mobile-label">رقم الشهادة *</div>
+            <input type="text" class="form-control certificate-number" placeholder="رقم الشهادة" required>
+          </td>
+          <td>
+            <div class="mobile-label">اسم المدرسة *</div>
+            <input type="text" class="form-control school-name" placeholder="اسم المدرسة" required>
+          </td>
+          <td>
+            <div class="mobile-label">هاتف المدير</div>
+            <input type="text" class="form-control manager-phone" placeholder="هاتف المدير">
+          </td>
+          <td>
+            <div class="mobile-label">ملاحظة</div>
+            <input type="text" class="form-control notes" placeholder="ملاحظة">
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger btn-sm remove-car" disabled>
+              <i class="fas fa-trash"></i>
             </button>
-          </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <datalist id="driversList">
+    <!-- سيتم ملؤه ديناميكيًا من ورقة الموظفين -->
+  </datalist>
+  
+  <button type="button" id="addCarBtn" class="btn btn-outline">
+    <i class="fas fa-plus"></i> إضافة سجل
+  </button>
+</div>
           
           <div id="duplicateMessage" class="alert alert-warning hidden">
             <i class="fas fa-exclamation-circle"></i>
