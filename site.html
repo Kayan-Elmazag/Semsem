@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام إدارة الشهادات</title>
+  <title>نظام إدارة شهادات السيارات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4361ee;
-      --primary-dark: #3a56d4;
-      --secondary: #3f37c9;
-      --success: #4cc9f0;
-      --danger: #f72585;
-      --warning: #f8961e;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --gray: #6c757d;
-      --light-gray: #e9ecef;
-      --border-radius: 12px;
-      --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --primary: #2b6cb0;
+      --primary-dark: #2c5282;
+      --primary-light: #bee3f8;
+      --secondary: #4c51bf;
+      --success: #38a169;
+      --success-light: #c6f6d5;
+      --danger: #e53e3e;
+      --danger-light: #fed7d7;
+      --warning: #dd6b20;
+      --warning-light: #feebc8;
+      --info: #3182ce;
+      --info-light: #ebf8ff;
+      --light: #f7fafc;
+      --dark: #1a202c;
+      --gray: #718096;
+      --light-gray: #edf2f7;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
     }
     
@@ -34,7 +40,43 @@
       background-color: #f8fafc;
       color: var(--dark);
       line-height: 1.6;
-      font-size: 16px;
+    }
+    
+    /* شاشة التحميل */
+    .loader-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 5px solid var(--primary-light);
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    
+    .loader-text {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--primary);
+      margin-top: 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     
     /* تسجيل الدخول */
@@ -43,7 +85,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #2b6cb0 0%, #4c51bf 100%);
       padding: 20px;
     }
     
@@ -61,6 +103,7 @@
     
     .auth-card:hover {
       transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
     
     .auth-icon {
@@ -87,23 +130,23 @@
       margin-bottom: 8px;
       font-weight: 600;
       color: var(--dark);
-      font-size: 16px;
+      font-size: 14px;
     }
     
     .form-control {
       width: 100%;
-      padding: 16px 18px;
+      padding: 14px 16px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 15px;
       transition: var(--transition);
       background-color: white;
-      min-height: 50px;
+      font-family: 'Tajawal', sans-serif;
     }
     
     .form-control:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
       outline: none;
     }
     
@@ -112,18 +155,18 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 16px 24px;
+      padding: 14px 24px;
       background-color: var(--primary);
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
       text-align: center;
       gap: 8px;
-      min-height: 50px;
+      font-family: 'Tajawal', sans-serif;
     }
     
     .btn:hover {
@@ -141,7 +184,7 @@
     }
     
     .btn-success:hover {
-      background-color: #3aa8d8;
+      background-color: #2f855a;
     }
     
     .btn-warning {
@@ -149,7 +192,7 @@
     }
     
     .btn-warning:hover {
-      background-color: #e07f0c;
+      background-color: #c05621;
     }
     
     .btn-danger {
@@ -157,7 +200,15 @@
     }
     
     .btn-danger:hover {
-      background-color: #e1146e;
+      background-color: #c53030;
+    }
+    
+    .btn-info {
+      background-color: var(--info);
+    }
+    
+    .btn-info:hover {
+      background-color: #2b6cb0;
     }
     
     .btn-outline {
@@ -167,13 +218,12 @@
     }
     
     .btn-outline:hover {
-      background-color: rgba(67, 97, 238, 0.1);
+      background-color: rgba(43, 108, 176, 0.1);
     }
     
     .btn-sm {
-      padding: 10px 16px;
+      padding: 8px 16px;
       font-size: 14px;
-      min-height: auto;
     }
     
     .btn-block {
@@ -183,33 +233,37 @@
     
     /* الرسائل */
     .alert {
-      padding: 16px 18px;
+      padding: 14px 16px;
       border-radius: 8px;
       margin-bottom: 20px;
       font-weight: 500;
       display: flex;
       align-items: center;
       gap: 10px;
-      z-index: 10000;
-      position: relative;
     }
     
     .alert-success {
-      background-color: rgba(76, 201, 240, 0.1);
-      color: #155724;
+      background-color: var(--success-light);
+      color: #22543d;
       border-left: 4px solid var(--success);
     }
     
     .alert-danger {
-      background-color: rgba(247, 37, 133, 0.1);
-      color: #721c24;
+      background-color: var(--danger-light);
+      color: #742a2a;
       border-left: 4px solid var(--danger);
     }
     
     .alert-warning {
-      background-color: rgba(248, 150, 30, 0.1);
-      color: #856404;
+      background-color: var(--warning-light);
+      color: #7b341e;
       border-left: 4px solid var(--warning);
+    }
+    
+    .alert-info {
+      background-color: var(--info-light);
+      color: #2a4365;
+      border-left: 4px solid var(--info);
     }
     
     /* التخطيط العام */
@@ -263,7 +317,7 @@
       background: white;
       border-radius: var(--border-radius);
       box-shadow: var(--box-shadow);
-      padding: 30px;
+      padding: 25px;
       margin-bottom: 30px;
       transition: var(--transition);
     }
@@ -371,7 +425,7 @@
       max-width: 800px;
       max-height: 80vh;
       overflow-y: auto;
-      padding: 30px;
+      padding: 25px;
       animation: fadeIn 0.3s ease-out;
     }
     
@@ -419,7 +473,7 @@
     
     /* أنماط جديدة لزر التحديث */
     .refresh-btn {
-      background-color: var(--success);
+      background-color: var(--info);
       color: white;
     }
     
@@ -437,17 +491,17 @@
     
     /* أنماط لحالات السجلات */
     .status-approved {
-      color: #28a745;
+      color: var(--success);
       font-weight: 600;
     }
     
     .status-rejected {
-      color: #dc3545;
+      color: var(--danger);
       font-weight: 600;
     }
     
     .status-pending {
-      color: #fd7e14;
+      color: var(--warning);
       font-weight: 600;
     }
     
@@ -484,6 +538,125 @@
       border-color: var(--primary);
     }
     
+    /* حقل البحث */
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: var(--transition);
+      font-family: 'Tajawal', sans-serif;
+    }
+    
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.2);
+      outline: none;
+    }
+    
+    /* خانة الاختيار */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    
+    .checkbox-input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    
+    /* شريط التقدم */
+    .progress-container {
+      width: 100%;
+      background-color: var(--light-gray);
+      border-radius: 8px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 10px;
+      background-color: var(--primary);
+      border-radius: 8px;
+      transition: width 0.3s ease;
+    }
+    
+    /* راديو بوتن */
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      margin: 10px 0;
+    }
+    
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    
+    /* متجاوب مع الجوال */
+    @media (max-width: 768px) {
+      .auth-card {
+        padding: 30px 20px;
+      }
+      
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .user-info {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .modal-body {
+        grid-template-columns: 1fr;
+      }
+      
+      .filter-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .filter-options {
+        width: 100%;
+      }
+      
+      .search-container {
+        flex-direction: column;
+      }
+      
+      .radio-group {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+
     /* أنماط إضافية لقائمة السائقين */
     datalist {
       max-height: 200px;
@@ -523,205 +696,83 @@
       font-size: 14px;
     }
     
-    /* تعديلات للجوال */
-    @media (max-width: 768px) {
-      body {
-        font-size: 14px;
-      }
-      
-      .auth-card {
-        padding: 30px 20px;
-      }
-      
-      .app-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-      
-      .user-info {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      .card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-      }
-      
-      .action-buttons {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .btn {
-        width: 100%;
-        font-size: 14px;
-        padding: 12px 16px;
-      }
-      
-      .modal-body {
-        grid-template-columns: 1fr;
-      }
-      
-      .filter-container {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .filter-options {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .filter-group {
-        width: 100%;
-      }
-      
-      .form-control {
-        padding: 14px 16px;
-        font-size: 14px;
-      }
-      
-      .card {
-        padding: 20px;
-      }
-      
-      .table th, .table td {
-        padding: 10px 12px;
-        font-size: 14px;
-      }
-      
-      .modal-content {
-        padding: 20px;
-      }
+    /* بطاقة معلومات النظام */
+    .system-info-card {
+      background: linear-gradient(135deg, #2b6cb0 0%, #4c51bf 100%);
+      color: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      margin-bottom: 30px;
     }
     
-    /* تعديلات للشاشات الصغيرة جدًا */
-    @media (max-width: 480px) {
-      .auth-card {
-        padding: 25px 15px;
-      }
-      
-      .card {
-        padding: 15px;
-      }
-      
-      .form-control {
-        padding: 12px 14px;
-      }
-      
-      .btn {
-        padding: 14px 16px;
-      }
-      
-      .modal-content {
-        padding: 15px;
-      }
-    }
-    
-    /* أنماط للاختيار المتعدد */
-    .select-all-checkbox {
-      margin-left: 10px;
-    }
-    
-    .record-checkbox {
-      margin-left: 10px;
-    }
-    
-    /* شريط البحث */
-    .search-container {
+    .system-info-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
       display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      width: 100%;
-    }
-    
-    .search-input {
-      flex: 1;
-      min-width: 200px;
-    }
-    
-    /* تحسينات للجداول على الجوال */
-    .table-mobile-view {
-      display: none;
-    }
-    
-    @media (max-width: 768px) {
-      .table-desktop-view {
-        display: none;
-      }
-      
-      .table-mobile-view {
-        display: block;
-      }
-      
-      .mobile-record {
-        background: white;
-        border-radius: var(--border-radius);
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      }
-      
-      .mobile-record-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-      }
-      
-      .mobile-record-label {
-        font-weight: 600;
-        color: var(--gray);
-      }
-      
-      .mobile-record-actions {
-        display: flex;
-        gap: 5px;
-        margin-top: 10px;
-      }
-    }
-    
-    /* تحسينات للتحميل */
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 2000;
-      display: flex;
-      justify-content: center;
       align-items: center;
-      display: none;
+      gap: 10px;
     }
     
-    .loading-spinner {
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
+    .system-info-text {
+      margin-bottom: 15px;
+      line-height: 1.7;
     }
     
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    /* شريط الأدوات */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    /* أيقونات الحالة */
+    .status-icon {
+      margin-left: 5px;
+    }
+    
+    /* شريط التبويبات */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--light-gray);
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+    }
+    
+    .tab.active {
+      border-bottom: 3px solid var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .tab:hover:not(.active) {
+      border-bottom: 3px solid var(--primary-light);
     }
   </style>
 </head>
 <body>
+  <!-- شاشة التحميل -->
+  <div id="loaderScreen" class="loader-container">
+    <div class="loader"></div>
+    <div class="loader-text">جاري تحميل النظام...</div>
+  </div>
+
   <!-- شاشة تسجيل الدخول -->
-  <div id="loginScreen" class="auth-container">
+  <div id="loginScreen" class="auth-container hidden">
     <div class="auth-card fade-in">
       <div class="auth-icon">
-        <i class="fas fa-car-alt"></i>
+        <i class="fas fa-truck-moving"></i>
       </div>
-      <h1 class="auth-title">نظام إدارة الشهادات</h1>
+      <h1 class="auth-title">نظام إدارة شهادات السيارات</h1>
       <form id="loginForm">
         <div class="form-group">
           <label for="username" class="form-label">اسم المستخدم</label>
@@ -741,96 +792,111 @@
 
   <!-- شاشة التطبيق -->
   <div id="appScreen" class="container hidden">
-    <header class="app-header">
-      <h1 class="app-title">
-        <i class="fas fa-id-card"></i> نظام إدارة الشهادات
-      </h1>
-      <div class="user-info">
-        <span id="currentUser"></span>
-        <div class="user-avatar" id="userAvatar"></div>
-      </div>
-    </header>
-    
-    <!-- بطاقة تسجيل شهادة جديدة -->
-    <div class="card fade-in">
-      <div class="card-header">
-        <h2 class="card-title">
-          <i class="fas fa-plus-circle"></i> تسجيل شهادات جديدة
-        </h2>
-      </div>
-      
-      <form id="dataForm">
-        <div class="form-group">
-          <label for="date" class="form-label">تاريخ الشهادة *</label>
-          <input type="date" id="date" class="form-control" required>
-        </div>
-        
-        <div class="cars-form">
-          <div class="table-responsive">
-            <table class="cars-table">
-              <thead>
-                <tr>
-                  <th>اسم السائق *</th>
-                  <th>رقم الشهادة *</th>
-                  <th>اسم المدرسة *</th>
-                  <th>هاتف المدير *</th>
-                  <th>ملاحظة</th>
-                  <th style="width: 50px;"></th>
-                </tr>
-              </thead>
-              <tbody id="carsContainer">
-                <!-- العناصر ستضاف هنا ديناميكيًا -->
-                <tr>
-                  <td>
-                    <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق" required>
-                  </td>
-                  <td><input type="text" class="form-control certificate-number" placeholder="رقم الشهادة" required></td>
-                  <td><input type="text" class="form-control school-name" placeholder="اسم المدرسة" required></td>
-                  <td><input type="text" class="form-control manager-phone" placeholder="هاتف المدير"></td>
-                  <td><input type="text" class="form-control notes" placeholder="ملاحظة"></td>
-                  <td>
-                    <button type="button" class="btn btn-danger btn-sm remove-car" disabled>
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          
-          <datalist id="driversList">
-            <!-- سيتم ملؤه ديناميكيًا من ورقة الموظفين -->
-          </datalist>
-          
-          <button type="button" id="addCarBtn" class="btn btn-outline">
-            <i class="fas fa-plus"></i> إضافة سجل
-          </button>
-        </div>
-        
-        <div id="duplicateMessage" class="alert alert-warning hidden">
-          <i class="fas fa-exclamation-circle"></i>
-          <span id="duplicateText"></span>
-        </div>
-        
-        <div id="message" class="alert hidden">
-          <i class="fas fa-info-circle"></i>
-          <span id="messageText"></span>
-        </div>
-        
-        <div class="action-buttons">
-          <button type="submit" class="btn btn-success">
-            <i class="fas fa-save"></i> حفظ السجلات
-          </button>
-        </div>
-      </form>
+    <!-- بطاقة معلومات النظام -->
+    <div class="system-info-card fade-in">
+      <h2 class="system-info-title">
+        <i class="fas fa-truck"></i> نظام إدارة شهادات السيارات
+      </h2>
+      <p class="system-info-text">
+        نظام متكامل لإدارة شهادات سيارات النقل والتوريدات، يتيح تسجيل الشهادات ومتابعتها وإدارتها بسهولة وكفاءة.
+      </p>
     </div>
     
-    <!-- بطاقة سجلات الشهادات -->
-    <div class="card fade-in">
-      <div class="card-header">
-        <h2 class="card-title">
-          <i class="fas fa-list-alt"></i> سجلات الشهادات
-        </h2>
+    <!-- شريط التبويبات -->
+    <div class="tabs">
+      <div class="tab active" data-tab="register">تسجيل شهادات</div>
+      <div class="tab" data-tab="records">سجلات الشهادات</div>
+      <div class="tab" data-tab="reports">التقارير</div>
+    </div>
+    
+    <!-- تبويب تسجيل الشهادات -->
+    <div id="registerTab" class="tab-content">
+      <!-- بطاقة تسجيل شهادة جديدة -->
+      <div class="card fade-in">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-plus-circle"></i> تسجيل شهادات جديدة
+          </h2>
+        </div>
+        
+        <form id="dataForm">
+          <div class="form-group">
+            <label for="date" class="form-label">تاريخ الشهادة *</label>
+            <input type="date" id="date" class="form-control" required>
+          </div>
+          
+          <div class="cars-form">
+            <div class="table-responsive">
+              <table class="cars-table">
+                <thead>
+                  <tr>
+                    <th>اسم السائق *</th>
+                    <th>رقم الشهادة *</th>
+                    <th>اسم المدرسة *</th>
+                    <th>هاتف المدير</th>
+                    <th>ملاحظة</th>
+                    <th style="width: 50px;"></th>
+                  </tr>
+                </thead>
+                <tbody id="carsContainer">
+                  <!-- العناصر ستضاف هنا ديناميكيًا -->
+                  <tr>
+                    <td>
+                      <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق" required>
+                    </td>
+                    <td><input type="text" class="form-control certificate-number" placeholder="رقم الشهادة" required></td>
+                    <td><input type="text" class="form-control school-name" placeholder="اسم المدرسة" required></td>
+                    <td><input type="text" class="form-control manager-phone" placeholder="هاتف المدير"></td>
+                    <td><input type="text" class="form-control notes" placeholder="ملاحظة"></td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-sm remove-car" disabled>
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <datalist id="driversList">
+              <!-- سيتم ملؤه ديناميكيًا من ورقة الموظفين -->
+            </datalist>
+            
+            <button type="button" id="addCarBtn" class="btn btn-outline">
+              <i class="fas fa-plus"></i> إضافة سجل
+            </button>
+          </div>
+          
+          <div id="duplicateMessage" class="alert alert-warning hidden">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="duplicateText"></span>
+          </div>
+          
+          <div id="message" class="alert hidden">
+            <i class="fas fa-info-circle"></i>
+            <span id="messageText"></span>
+          </div>
+          
+          <div class="action-buttons">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-save"></i> حفظ السجلات
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- تبويب سجلات الشهادات -->
+    <div id="recordsTab" class="tab-content hidden">
+      <!-- شريط الأدوات -->
+      <div class="toolbar">
+        <div class="search-container">
+          <input type="text" id="searchInput" class="search-input" placeholder="ابحث برقم الشهادة...">
+          <button id="searchBtn" class="btn btn-info">
+            <i class="fas fa-search"></i> بحث
+          </button>
+        </div>
+        
         <div class="filter-container">
           <div class="filter-options">
             <div class="filter-group">
@@ -850,67 +916,70 @@
                 <option value="قيد الانتظار">قيد الانتظار</option>
               </select>
             </div>
-            <div class="filter-group">
-              <input type="text" id="certNumberFilter" class="form-control" placeholder="بحث برقم الشهادة">
-            </div>
           </div>
-          <div class="action-buttons">
-            <button id="refreshBtn" class="btn refresh-btn">
-              <i class="fas fa-sync-alt"></i> تحديث
-            </button>
-            <button id="bulkActionBtn" class="btn btn-warning hidden">
-              <i class="fas fa-tasks"></i> إجراء جماعي
-            </button>
-          </div>
+          <button id="refreshBtn" class="btn refresh-btn">
+            <i class="fas fa-sync-alt"></i> تحديث
+          </button>
         </div>
       </div>
       
-      <!-- شريط الإجراءات الجماعية -->
+      <!-- الأشرطة الجماعية -->
       <div id="bulkActions" class="bulk-actions">
-        <span id="selectedCount">0 سجلات محددة</span>
-        <button id="bulkApproveBtn" class="btn btn-success btn-sm">
-          <i class="fas fa-check"></i> موافقة جماعية
+        <span id="selectedCount">0 سجل محدد</span>
+        <button id="approveSelectedBtn" class="btn btn-success btn-sm">
+          <i class="fas fa-check"></i> الموافقة على المحدد
         </button>
-        <button id="bulkRejectBtn" class="btn btn-danger btn-sm">
-          <i class="fas fa-times"></i> رفض جماعي
+        <button id="rejectSelectedBtn" class="btn btn-danger btn-sm">
+          <i class="fas fa-times"></i> رفض المحدد
         </button>
-        <button id="bulkCancelBtn" class="btn btn-outline btn-sm">
-          <i class="fas fa-times"></i> إلغاء
+        <button id="clearSelectionBtn" class="btn btn-outline btn-sm">
+          <i class="fas fa-times-circle"></i> إلغاء التحديد
         </button>
       </div>
       
-      <div class="table-responsive">
-        <table class="table table-desktop-view">
-          <thead>
-            <tr>
-              <th style="width: 40px;">
-                <input type="checkbox" id="selectAll" class="select-all-checkbox hidden">
-              </th>
-              <th>التاريخ</th>
-              <th>السائق</th>
-              <th>رقم الشهادة</th>
-              <th>اسم المدرسة</th>
-              <th>هاتف المدير</th>
-              <th>ملاحظة</th>
-              <th>مسجل بواسطة</th>
-              <th>حالة الطلب</th>
-              <th style="width: 120px;">إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="recordsBody">
-            <!-- البيانات ستضاف هنا عبر الجافاسكربت -->
-          </tbody>
-        </table>
-        
-        <div id="mobileRecords" class="table-mobile-view">
-          <!-- عرض الجوال سيتم ملؤه ديناميكيًا -->
+      <!-- بطاقة سجلات الشهادات -->
+      <div class="card fade-in">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAllCheckbox"></th>
+                <th>التاريخ</th>
+                <th>السائق</th>
+                <th>رقم الشهادة</th>
+                <th>اسم المدرسة</th>
+                <th>هاتف المدير</th>
+                <th>ملاحظة</th>
+                <th>مسجل بواسطة</th>
+                <th>حالة الطلب</th>
+                <th style="width: 120px;">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="recordsBody">
+              <!-- البيانات ستضاف هنا عبر الجافاسكربت -->
+            </tbody>
+          </table>
+          <div id="noRecords" class="no-data">
+            <i class="fas fa-info-circle"></i>
+            <p>لا توجد سجلات متاحة</p>
+          </div>
+          <div id="pagination" class="pagination"></div>
         </div>
-        
-        <div id="noRecords" class="no-data">
-          <i class="fas fa-info-circle"></i>
-          <p>لا توجد سجلات متاحة</p>
+      </div>
+    </div>
+    
+    <!-- تبويب التقارير -->
+    <div id="reportsTab" class="tab-content hidden">
+      <div class="card fade-in">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-chart-bar"></i> تقارير الشهادات
+          </h2>
         </div>
-        <div id="pagination" class="pagination"></div>
+        <div class="card-body">
+          <p>هنا سيتم عرض التقارير والإحصائيات الخاصة بالشهادات.</p>
+          <!-- يمكن إضافة المزيد من المحتوى هنا -->
+        </div>
       </div>
     </div>
   </div>
@@ -997,7 +1066,7 @@
             <input type="text" id="editSchoolName" class="form-control" required>
           </div>
           <div class="form-group">
-            <label for="editManagerPhone" class="form-label">هاتف المدير *</label>
+            <label for="editManagerPhone" class="form-label">هاتف المدير</label>
             <input type="text" id="editManagerPhone" class="form-control">
           </div>
           <div class="form-group">
@@ -1005,8 +1074,8 @@
             <input type="text" id="editNotes" class="form-control">
           </div>
           
-          <!-- أزرار الموافقة/الرفض -->
-          <div id="approvalButtons" class="action-buttons" style="margin-top: 20px;">
+          <!-- أزرار الموافقة/الرفض للمشرفين -->
+          <div id="approvalButtons" class="action-buttons" style="margin-top: 20px; display: none;">
             <button type="button" id="approveBtn" class="btn btn-success">
               <i class="fas fa-check"></i> الموافقة
             </button>
@@ -1025,19 +1094,17 @@
     </div>
   </div>
 
-  <!-- نافذة التحميل -->
-  <div id="loadingOverlay" class="loading-overlay">
-    <div class="loading-spinner"></div>
-  </div>
-
   <script>
     // إعدادات النظام
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby012t3UkynO5DJ_syci5vf021nAP1e9i0ijPLCMzyudHu3QePEALq7qI1Ct894hmO7/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5Ie9jqKvOF5C3S2AUHVMIcc_D71Dw5dQa-8f4nm8ORpW7PkYEjqFuL886hjOMwUGP/exec";
     const SPREADSHEET_ID = "1h2pTg1PUDn5s8QPEWCKNGoo9lho42UJzUg8ljDFTm0w";
     const SHEET_NAME = "الشهادات";
     const EMPLOYEES_SHEET = "الموظفين";
     const USERS_SHEET = "المستخدمين";
     const RECORDS_PER_PAGE = 20;
+    
+    // توقيت الرياض (UTC+3)
+    const riyadhTimeZone = 'Asia/Riyadh';
     
     // متغيرات النظام
     let currentUser = null;
@@ -1053,7 +1120,8 @@
     // تعيين تاريخ اليوم بدون وقت
     function setTodayDate() {
       const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
+      // تحويل التاريخ إلى توقيت الرياض
+      const todayStr = today.toLocaleDateString('en-CA', { timeZone: riyadhTimeZone });
       document.getElementById('date').value = todayStr;
       document.getElementById('editDate').value = todayStr;
     }
@@ -1069,15 +1137,18 @@
       return initials.toUpperCase();
     }
     
-    // دالة لعرض التاريخ بتنسيق DD/MM/YYYY
+    // دالة لعرض التاريخ بتنسيق DD/MM/YYYY (أرقام إنجليزية)
     function formatDisplayDate(dateStr) {
       if (!dateStr) return '-';
       
       try {
+        // إنشاء تاريخ في توقيت الرياض
         const date = new Date(dateStr);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
+        const options = { timeZone: riyadhTimeZone, year: 'numeric', month: '2-digit', day: '2-digit' };
+        const formatted = date.toLocaleDateString('en-GB', options);
+        
+        // إعادة ترتيب المكونات لتصبح DD/MM/YYYY
+        const [day, month, year] = formatted.split('/');
         return `${day}/${month}/${year}`;
       } catch (e) {
         console.error("Error formatting date:", e);
@@ -1085,23 +1156,54 @@
       }
     }
     
-    // دالة لعرض التاريخ والوقت بتنسيق DD/MM/YYYY HH:MM:SS
+    // دالة لعرض التاريخ والوقت بتنسيق DD/MM/YYYY HH:MM:SS (أرقام إنجليزية)
     function formatDisplayDateTime(dateStr) {
       if (!dateStr) return '-';
       
       try {
+        // إنشاء تاريخ في توقيت الرياض
         const date = new Date(dateStr);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        const dateOptions = { timeZone: riyadhTimeZone, year: 'numeric', month: '2-digit', day: '2-digit' };
+        const timeOptions = { timeZone: riyadhTimeZone, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        
+        const formattedDate = date.toLocaleDateString('en-GB', dateOptions);
+        const formattedTime = date.toLocaleTimeString('en-GB', timeOptions);
+        
+        // إعادة ترتيب مكونات التاريخ لتصبح DD/MM/YYYY
+        const [day, month, year] = formattedDate.split('/');
+        return `${day}/${month}/${year} ${formattedTime}`;
       } catch (e) {
         console.error("Error formatting datetime:", e);
         return '-';
       }
+    }
+    
+    // تحويل التاريخ من تنسيق YYYY-MM-DD إلى كائن تاريخ في توقيت الرياض
+    function parseRiyadhDate(dateStr) {
+      if (!dateStr) return null;
+      
+      try {
+        // إنشاء تاريخ في توقيت الرياض
+        const [year, month, day] = dateStr.split('-');
+        const date = new Date(Date.UTC(year, month - 1, day));
+        
+        // تعديل التاريخ حسب توقيت الرياض (UTC+3)
+        return new Date(date.getTime() + (3 * 60 * 60 * 1000));
+      } catch (e) {
+        console.error("Error parsing date:", e);
+        return null;
+      }
+    }
+    
+    // الحصول على الشهر والسنة من تاريخ معين (في توقيت الرياض)
+    function getMonthYearFromDate(dateStr) {
+      const date = parseRiyadhDate(dateStr);
+      if (!date) return { month: 0, year: 0 };
+      
+      return {
+        month: date.getMonth() + 1,
+        year: date.getFullYear()
+      };
     }
     
     // عرض الرسالة
@@ -1119,19 +1221,8 @@
       }, 5000);
     }
     
-    // إظهار نافذة التحميل
-    function showLoading() {
-      document.getElementById('loadingOverlay').style.display = 'flex';
-    }
-    
-    // إخفاء نافذة التحميل
-    function hideLoading() {
-      document.getElementById('loadingOverlay').style.display = 'none';
-    }
-    
     // جلب سجلات الموظفين (السائقين)
     async function fetchDrivers() {
-      showLoading();
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1162,14 +1253,11 @@
       } catch (error) {
         console.error("Error fetching drivers:", error);
         showMessage('danger', "حدث خطأ أثناء جلب بيانات السائقين");
-      } finally {
-        hideLoading();
       }
     }
     
-    // جلب السجلات مع التصفية حسب التاريخ والحالة ورقم الشهادة
-    async function fetchRecords(filterDays = null, statusFilter = 'all', certNumber = '') {
-      showLoading();
+    // جلب السجلات مع التصفية حسب التاريخ والحالة
+    async function fetchRecords(filterDays = null, statusFilter = 'all') {
       let filterDate = null;
       
       if (filterDays === 'month') {
@@ -1202,13 +1290,6 @@
             currentRecords = currentRecords.filter(record => record.status === statusFilter);
           }
           
-          // تطبيق فلترة رقم الشهادة إذا كانت محددة
-          if (certNumber) {
-            currentRecords = currentRecords.filter(record => 
-              record.certNumber && record.certNumber.includes(certNumber)
-            );
-          }
-          
           // ترتيب السجلات من الأحدث إلى الأقدم
           currentRecords.sort((a, b) => new Date(b.registrationDate) - new Date(a.registrationDate));
           displayRecords(currentRecords);
@@ -1217,26 +1298,49 @@
         }
       } catch (error) {
         showMessage('danger', "حدث خطأ في الاتصال بالخادم");
-      } finally {
-        hideLoading();
+      }
+    }
+    
+    // البحث عن سجلات برقم الشهادة
+    async function searchRecords(certNumber) {
+      if (!certNumber) {
+        showMessage('warning', "الرجاء إدخال رقم الشهادة للبحث");
+        return;
+      }
+      
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `action=searchRecords&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}&certNumber=${encodeURIComponent(certNumber)}`
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          currentRecords = result.records;
+          displayRecords(currentRecords);
+          showMessage('success', `تم العثور على ${currentRecords.length} سجل`);
+        } else {
+          showMessage('danger', result.message || "حدث خطأ أثناء البحث");
+        }
+      } catch (error) {
+        showMessage('danger', "حدث خطأ في الاتصال بالخادم");
       }
     }
     
     // عرض السجلات في الجدول مع التقسيم إلى صفحات
     function displayRecords(records) {
       const tbody = document.getElementById('recordsBody');
-      const mobileRecords = document.getElementById('mobileRecords');
       const noRecords = document.getElementById('noRecords');
       const pagination = document.getElementById('pagination');
-      const selectAllCheckbox = document.getElementById('selectAll');
-      
+      const bulkActions = document.getElementById('bulkActions');
       tbody.innerHTML = '';
-      mobileRecords.innerHTML = '';
       pagination.innerHTML = '';
       selectedRecords = [];
-      
-      // إظهار/إخفاء خيار الاختيار المتعدد حسب الصلاحية
-      selectAllCheckbox.classList.toggle('hidden', currentUserRole < 8);
+      bulkActions.style.display = 'none';
       
       if (records.length === 0) {
         noRecords.classList.remove('hidden');
@@ -1253,31 +1357,28 @@
       const endIndex = Math.min(startIndex + RECORDS_PER_PAGE, records.length);
       const pageRecords = records.slice(startIndex, endIndex);
       
-      // عرض الجدول العادي (لأجهزة الكمبيوتر)
       pageRecords.forEach(record => {
         const row = document.createElement('tr');
         row.className = 'fade-in';
+        row.dataset.uniqueId = record.uniqueId;
         
-        // عمود الاختيار
+        // خانة الاختيار
         const selectCell = document.createElement('td');
-        if (currentUserRole >= 8) {
-          const checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.className = 'record-checkbox';
-          checkbox.dataset.id = record.uniqueId;
-          checkbox.addEventListener('change', function() {
-            if (this.checked) {
-              selectedRecords.push(record.uniqueId);
-            } else {
-              selectedRecords = selectedRecords.filter(id => id !== record.uniqueId);
-            }
-            updateSelectedCount();
-          });
-          selectCell.appendChild(checkbox);
-        }
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'record-checkbox';
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            selectedRecords.push(record.uniqueId);
+          } else {
+            selectedRecords = selectedRecords.filter(id => id !== record.uniqueId);
+          }
+          updateBulkActions();
+        });
+        selectCell.appendChild(checkbox);
         row.appendChild(selectCell);
         
-        // بقية الأعمدة
+        // بقية الخلايا
         const dateCell = document.createElement('td');
         dateCell.textContent = formatDisplayDate(record.date) || '-';
         row.appendChild(dateCell);
@@ -1312,10 +1413,13 @@
         
         if (record.status === 'معتمد') {
           statusSpan.className = 'status-approved';
+          statusSpan.innerHTML = `<i class="fas fa-check-circle status-icon"></i> ${statusSpan.textContent}`;
         } else if (record.status === 'مرفوض') {
           statusSpan.className = 'status-rejected';
+          statusSpan.innerHTML = `<i class="fas fa-times-circle status-icon"></i> ${statusSpan.textContent}`;
         } else {
           statusSpan.className = 'status-pending';
+          statusSpan.innerHTML = `<i class="fas fa-clock status-icon"></i> ${statusSpan.textContent}`;
         }
         
         statusCell.appendChild(statusSpan);
@@ -1332,8 +1436,8 @@
         viewBtn.addEventListener('click', () => showRecordDetails(record));
         actionsCell.appendChild(viewBtn);
         
-        // عرض زر التعديل فقط للمستخدمين ذوي صلاحية 7 فأعلى
-        if (currentUserRole >= 7) {
+        // عرض زر التعديل فقط للمستخدمين ذوي صلاحية 10 فأعلى
+        if (currentUserRole >= 10) {
           const editBtn = document.createElement('button');
           editBtn.className = 'btn btn-warning btn-sm';
           editBtn.innerHTML = '<i class="fas fa-edit"></i>';
@@ -1344,62 +1448,6 @@
         
         row.appendChild(actionsCell);
         tbody.appendChild(row);
-      });
-      
-      // عرض الجدول المخصص للجوال
-      pageRecords.forEach(record => {
-        const recordDiv = document.createElement('div');
-        recordDiv.className = 'mobile-record fade-in';
-        
-        const statusSpan = document.createElement('span');
-        statusSpan.textContent = record.status || 'قيد الانتظار';
-        
-        if (record.status === 'معتمد') {
-          statusSpan.className = 'status-approved';
-        } else if (record.status === 'مرفوض') {
-          statusSpan.className = 'status-rejected';
-        } else {
-          statusSpan.className = 'status-pending';
-        }
-        
-        recordDiv.innerHTML = `
-          <div class="mobile-record-row">
-            <span class="mobile-record-label">التاريخ:</span>
-            <span>${formatDisplayDate(record.date) || '-'}</span>
-          </div>
-          <div class="mobile-record-row">
-            <span class="mobile-record-label">السائق:</span>
-            <span>${record.driver || '-'}</span>
-          </div>
-          <div class="mobile-record-row">
-            <span class="mobile-record-label">رقم الشهادة:</span>
-            <span>${record.certNumber || '-'}</span>
-          </div>
-          <div class="mobile-record-row">
-            <span class="mobile-record-label">الحالة:</span>
-            <span>${statusSpan.outerHTML}</span>
-          </div>
-        `;
-        
-        const actionsDiv = document.createElement('div');
-        actionsDiv.className = 'mobile-record-actions';
-        
-        const viewBtn = document.createElement('button');
-        viewBtn.className = 'btn btn-sm';
-        viewBtn.innerHTML = '<i class="fas fa-eye"></i> عرض';
-        viewBtn.addEventListener('click', () => showRecordDetails(record));
-        actionsDiv.appendChild(viewBtn);
-        
-        if (currentUserRole >= 7) {
-          const editBtn = document.createElement('button');
-          editBtn.className = 'btn btn-warning btn-sm';
-          editBtn.innerHTML = '<i class="fas fa-edit"></i> تعديل';
-          editBtn.addEventListener('click', () => editRecord(record));
-          actionsDiv.appendChild(editBtn);
-        }
-        
-        recordDiv.appendChild(actionsDiv);
-        mobileRecords.appendChild(recordDiv);
       });
       
       // إنشاء عناصر التقسيم إلى صفحات
@@ -1422,22 +1470,83 @@
           pagination.appendChild(pageItem);
         }
       }
+      
+      // تحديث خانة الاختيار الكلي
+      document.getElementById('selectAllCheckbox').checked = false;
     }
     
-    // تحديث عدد السجلات المحددة
-    function updateSelectedCount() {
-      const selectedCount = document.getElementById('selectedCount');
+    // تحديث شريط الإجراءات الجماعية
+    function updateBulkActions() {
       const bulkActions = document.getElementById('bulkActions');
-      const bulkActionBtn = document.getElementById('bulkActionBtn');
-      
-      selectedCount.textContent = `${selectedRecords.length} سجلات محددة`;
+      const selectedCount = document.getElementById('selectedCount');
       
       if (selectedRecords.length > 0) {
         bulkActions.style.display = 'flex';
-        bulkActionBtn.classList.remove('hidden');
+        selectedCount.textContent = `${selectedRecords.length} سجل محدد`;
       } else {
         bulkActions.style.display = 'none';
-        bulkActionBtn.classList.add('hidden');
+      }
+    }
+    
+    // الموافقة على السجلات المحددة
+    async function approveSelectedRecords() {
+      if (selectedRecords.length === 0) {
+        showMessage('warning', "الرجاء تحديد سجلات للموافقة عليها");
+        return;
+      }
+      
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `action=bulkUpdateStatus&uniqueIds=${encodeURIComponent(JSON.stringify(selectedRecords))}&status=معتمد&user=${encodeURIComponent(currentUser)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}`
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showMessage('success', `تم الموافقة على ${selectedRecords.length} سجل بنجاح`);
+          selectedRecords = [];
+          document.getElementById('bulkActions').style.display = 'none';
+          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
+        } else {
+          showMessage('danger', result.message || "حدث خطأ أثناء الموافقة على السجلات");
+        }
+      } catch (error) {
+        showMessage('danger', "حدث خطأ في الاتصال بالخادم");
+      }
+    }
+    
+    // رفض السجلات المحددة
+    async function rejectSelectedRecords() {
+      if (selectedRecords.length === 0) {
+        showMessage('warning', "الرجاء تحديد سجلات للرفض");
+        return;
+      }
+      
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `action=bulkUpdateStatus&uniqueIds=${encodeURIComponent(JSON.stringify(selectedRecords))}&status=مرفوض&user=${encodeURIComponent(currentUser)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}`
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showMessage('success', `تم رفض ${selectedRecords.length} سجل بنجاح`);
+          selectedRecords = [];
+          document.getElementById('bulkActions').style.display = 'none';
+          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
+        } else {
+          showMessage('danger', result.message || "حدث خطأ أثناء رفض السجلات");
+        }
+      } catch (error) {
+        showMessage('danger', "حدث خطأ في الاتصال بالخادم");
       }
     }
     
@@ -1452,7 +1561,7 @@
         { label: 'السائق', value: record.driver },
         { label: 'رقم الشهادة', value: record.certNumber },
         { label: 'اسم المدرسة', value: record.schoolName },
-        { label: 'هاتف المدير', value: record.managerPhone },
+        { label: 'هاتف المدير', value: record.managerPhone || 'لا يوجد' },
         { label: 'ملاحظة', value: record.notes || 'لا يوجد' },
         { label: 'مسجل بواسطة', value: record.user },
         { label: 'حالة الطلب', value: record.status || 'قيد الانتظار' },
@@ -1505,9 +1614,10 @@
       document.getElementById('editManagerPhone').value = record.managerPhone || '';
       document.getElementById('editNotes').value = record.notes || '';
       
-      // إظهار أزرار الموافقة/الرفض للمشرفين (صلاحية 8 فأعلى)
+      // إظهار أزرار الموافقة/الرفض فقط للمشرفين (صلاحية 8 فأعلى) وللسجلات غير المعتمدة/المرفوضة
       const approvalButtons = document.getElementById('approvalButtons');
-      approvalButtons.style.display = currentUserRole >= 8 ? 'flex' : 'none';
+      const showApprovalButtons = currentUserRole >= 8 && (!record.status || record.status === 'قيد الانتظار');
+      approvalButtons.style.display = showApprovalButtons ? 'flex' : 'none';
       
       modal.style.display = 'flex';
       
@@ -1524,10 +1634,10 @@
       row.className = 'fade-in';
       row.innerHTML = `
         <td>
-          <input type="text" class="form-control driver-name" value="${driver}" list="driversList" placeholder="اسم السائق">
+          <input type="text" class="form-control driver-name" value="${driver}" list="driversList" placeholder="اسم السائق" required>
         </td>
-        <td><input type="text" class="form-control certificate-number" value="${certNumber}" placeholder="رقم الشهادة"></td>
-        <td><input type="text" class="form-control school-name" value="${school}" placeholder="اسم المدرسة"></td>
+        <td><input type="text" class="form-control certificate-number" value="${certNumber}" placeholder="رقم الشهادة" required></td>
+        <td><input type="text" class="form-control school-name" value="${school}" placeholder="اسم المدرسة" required></td>
         <td><input type="text" class="form-control manager-phone" value="${phone}" placeholder="هاتف المدير"></td>
         <td><input type="text" class="form-control notes" value="${notes}" placeholder="ملاحظة"></td>
         <td>
@@ -1557,9 +1667,20 @@
           }
         }, 300);
       });
+      
+      // التحقق من اسم السائق عند فقدان التركيز
+      const driverInput = row.querySelector('.driver-name');
+      driverInput.addEventListener('blur', function() {
+        const driverName = this.value.trim();
+        if (driverName && !driversList.some(driver => driver.name === driverName)) {
+          showMessage('warning', "اسم السائق غير موجود في القائمة، الرجاء اختيار اسم من القائمة");
+          this.value = '';
+          this.focus();
+        }
+      });
     }
     
-    // جمع بيانات السجلات من النموذج (وتجاهل الصفوف الفارغة)
+    // جمع بيانات السجلات من النموذج
     function gatherRecordsData() {
       const date = document.getElementById('date').value;
       const records = [];
@@ -1569,15 +1690,10 @@
         const driver = row.querySelector('.driver-name').value.trim();
         const certNumber = row.querySelector('.certificate-number').value.trim();
         const school = row.querySelector('.school-name').value.trim();
-        const phone = row.querySelector('.manager-phone').value.trim();
-        const notes = row.querySelector('.notes').value.trim();
+        const phone = row.querySelector('.manager-phone')?.value.trim() || '';
+        const notes = row.querySelector('.notes')?.value.trim() || '';
         
-        // تجاهل الصفوف الفارغة تمامًا
-        if (!driver && !certNumber && !school && !phone) {
-          return;
-        }
-        
-        // التحقق من الحقول الإجبارية للصفوف غير الفارغة
+        // التحقق من الحقول الإجبارية
         if (!driver) {
           errors.push(`اسم السائق في الصف ${index + 1} مطلوب`);
           row.querySelector('.driver-name').focus();
@@ -1593,17 +1709,31 @@
           if (!errors.length) row.querySelector('.school-name').focus();
         }
         
-        if (!errors.length) {
-          records.push({
-            date,
-            driver,
-            certNumber,
-            school,
-            phone,
-            notes: notes || ''
-          });
+        // التحقق من أن اسم السائق موجود في القائمة
+        if (driver && !driversList.some(d => d.name === driver)) {
+          errors.push(`اسم السائق '${driver}' غير موجود في القائمة`);
+          if (!errors.length) row.querySelector('.driver-name').focus();
+        }
+        
+        // تجاهل الصفوف الفارغة تماماً
+        if (driver || certNumber || school || phone || notes) {
+          if (!errors.length) {
+            records.push({
+              date,
+              driver,
+              certNumber,
+              school,
+              phone,
+              notes
+            });
+          }
         }
       });
+      
+      // إذا كانت جميع الصفوف فارغة
+      if (records.length === 0 && errors.length === 0) {
+        errors.push("الرجاء إدخال بيانات السجلات");
+      }
       
       return { records, errors };
     }
@@ -1623,8 +1753,8 @@
         item.innerHTML = `
           <strong>${record.driver}</strong> - 
           رقم الشهادة: ${record.certNumber} - 
-          المدرسة: ${record.school} - 
-          هاتف المدير: ${record.phone}
+          المدرسة: ${record.school}
+          ${record.phone ? `- هاتف المدير: ${record.phone}` : ''}
           ${record.notes ? `<br><small>ملاحظة: ${record.notes}</small>` : ''}
         `;
         list.appendChild(item);
@@ -1651,7 +1781,6 @@
     
     // إرسال السجلات إلى الخادم
     async function submitRecords(records) {
-      showLoading();
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1671,10 +1800,10 @@
           container.innerHTML = `
             <tr>
               <td>
-                <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق">
+                <input type="text" class="form-control driver-name" list="driversList" placeholder="اسم السائق" required>
               </td>
-              <td><input type="text" class="form-control certificate-number" placeholder="رقم الشهادة"></td>
-              <td><input type="text" class="form-control school-name" placeholder="اسم المدرسة"></td>
+              <td><input type="text" class="form-control certificate-number" placeholder="رقم الشهادة" required></td>
+              <td><input type="text" class="form-control school-name" placeholder="اسم المدرسة" required></td>
               <td><input type="text" class="form-control manager-phone" placeholder="هاتف المدير"></td>
               <td><input type="text" class="form-control notes" placeholder="ملاحظة"></td>
               <td>
@@ -1686,73 +1815,42 @@
           `;
           
           setTodayDate();
-          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
+          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
+          
+          // التبديل إلى تبويب السجلات بعد الحفظ
+          switchTab('records');
         } else {
           showMessage('danger', result.message || "حدث خطأ أثناء حفظ البيانات");
         }
       } catch (error) {
         showMessage('danger', "حدث خطأ في الاتصال بالخادم");
-      } finally {
-        hideLoading();
       }
     }
     
     // تحديث حالة السجل (موافقة/رفض)
-    async function updateRecordStatus(uniqueId, status) {
-      showLoading();
+    async function updateRecordStatus(status) {
+      if (!currentEditingRecord) return;
+      
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: `action=updateRecordStatus&uniqueId=${uniqueId}&status=${encodeURIComponent(status)}&user=${encodeURIComponent(currentUser)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}`
+          body: `action=updateRecordStatus&uniqueId=${currentEditingRecord.uniqueId}&status=${encodeURIComponent(status)}&user=${encodeURIComponent(currentUser)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}`
         });
         
         const result = await response.json();
         
         if (result.success) {
           showMessage('success', `تم ${status === 'معتمد' ? 'الموافقة على' : 'رفض'} السجل بنجاح`);
-          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
-          return true;
+          document.getElementById('editModal').style.display = 'none';
+          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
         } else {
           showMessage('danger', result.message || "حدث خطأ أثناء تحديث حالة السجل");
-          return false;
         }
       } catch (error) {
         showMessage('danger', "حدث خطأ في الاتصال بالخادم");
-        return false;
-      } finally {
-        hideLoading();
-      }
-    }
-    
-    // تحديث حالة عدة سجلات مرة واحدة
-    async function updateBulkRecordsStatus(records, status) {
-      showLoading();
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `action=bulkUpdateRecordsStatus&records=${encodeURIComponent(JSON.stringify(records))}&status=${encodeURIComponent(status)}&user=${encodeURIComponent(currentUser)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(SHEET_NAME)}`
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          showMessage('success', `تم ${status === 'معتمد' ? 'الموافقة على' : 'رفض'} ${records.length} سجلات بنجاح`);
-          document.getElementById('bulkActions').style.display = 'none';
-          document.getElementById('bulkActionBtn').classList.add('hidden');
-          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
-        } else {
-          showMessage('danger', result.message || "حدث خطأ أثناء تحديث حالة السجلات");
-        }
-      } catch (error) {
-        showMessage('danger', "حدث خطأ في الاتصال بالخادم");
-      } finally {
-        hideLoading();
       }
     }
     
@@ -1762,8 +1860,8 @@
       const driver = document.getElementById('editDriver').value.trim();
       const certNumber = document.getElementById('editCertNumber').value.trim();
       const schoolName = document.getElementById('editSchoolName').value.trim();
-      const managerPhone = document.getElementById('editManagerPhone').value.trim();
-      const notes = document.getElementById('editNotes').value.trim();
+      const managerPhone = document.getElementById('editManagerPhone').value.trim() || '';
+      const notes = document.getElementById('editNotes').value.trim() || '';
       
       // التحقق من الحقول الإجبارية
       if (!date || !driver || !certNumber || !schoolName) {
@@ -1771,7 +1869,12 @@
         return false;
       }
       
-      showLoading();
+      // التحقق من أن اسم السائق موجود في القائمة
+      if (!driversList.some(d => d.name === driver)) {
+        showMessage('danger', "اسم السائق غير موجود في القائمة");
+        return false;
+      }
+      
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1786,7 +1889,7 @@
         if (result.success) {
           showMessage('success', "تم تعديل السجل بنجاح");
           document.getElementById('editModal').style.display = 'none';
-          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
+          fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
           return true;
         } else {
           showMessage('danger', result.message || "حدث خطأ أثناء تعديل السجل");
@@ -1795,8 +1898,6 @@
       } catch (error) {
         showMessage('danger', "حدث خطأ في الاتصال بالخادم");
         return false;
-      } finally {
-        hideLoading();
       }
     }
     
@@ -1826,68 +1927,97 @@
       });
     }
     
-    // تسجيل الدخول
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+    // التبديل بين التبويبات
+    function switchTab(tabId) {
+      // إخفاء جميع التبويبات
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+      });
       
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const messageDiv = document.getElementById('loginMessage');
+      // إظهار التبويب المحدد
+      document.getElementById(`${tabId}Tab`).classList.remove('hidden');
       
-      // إظهار تحميل
-      const submitBtn = e.target.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
-      submitBtn.disabled = true;
-      
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(USERS_SHEET)}`
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          // تخزين بيانات المستخدم في المتغيرات العامة
-          currentUser = result.user.name;
-          currentUsername = result.user.username;
-          currentUserRole = result.user.role;
-          
-          // تحديث واجهة المستخدم
-          document.getElementById('currentUser').textContent = currentUser;
-          document.getElementById('userAvatar').textContent = createUserAvatar(currentUser);
-          
-          // إخفاء شاشة الدخول وإظهار التطبيق
-          document.getElementById('loginScreen').classList.add('hidden');
-          document.getElementById('appScreen').classList.remove('hidden');
-          
-          // تحميل البيانات الأولية
-          setTodayDate();
-          fetchDrivers();
-          fetchRecords();
-          
-          // إظهار رسالة ترحيبية
-          showMessage('success', `مرحباً ${currentUser}! تم تسجيل الدخول بنجاح`);
-        } else {
-          messageDiv.textContent = result.message || "بيانات الدخول غير صحيحة";
-          messageDiv.className = "alert alert-danger";
-          messageDiv.classList.remove('hidden');
+      // تحديث حالة التبويبات النشطة
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.dataset.tab === tabId) {
+          tab.classList.add('active');
         }
-      } catch (error) {
-        console.error("Login error:", error);
-        messageDiv.textContent = "حدث خطأ في الاتصال بالخادم";
-        messageDiv.className = "alert alert-danger";
-        messageDiv.classList.remove('hidden');
-      } finally {
-        // إعادة زر التسجيل إلى حالته الأصلية
-        submitBtn.innerHTML = originalBtnText;
-        submitBtn.disabled = false;
+      });
+      
+      // إذا كان التبويب هو سجلات الشهادات، قم بتحديث السجلات
+      if (tabId === 'records') {
+        fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
       }
+    }
+    
+    // تسجيل الدخول
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const messageDiv = document.getElementById('loginMessage');
+  
+  // إظهار تحميل
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+  submitBtn.disabled = true;
+  
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&spreadsheetId=${SPREADSHEET_ID}&sheetName=${encodeURIComponent(USERS_SHEET)}`
     });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // تخزين بيانات المستخدم في المتغيرات العامة
+      currentUser = result.user.name;
+      currentUsername = result.user.username;
+      currentUserRole = result.user.role;
+      
+      // إخفاء شاشة الدخول وإظهار التطبيق
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appScreen').classList.remove('hidden');
+      
+      // الآن فقط نقوم بتعيين بيانات المستخدم بعد التأكد من وجود العناصر
+      const currentUserElement = document.getElementById('currentUser');
+      const userAvatarElement = document.getElementById('userAvatar');
+      
+      if (currentUserElement && userAvatarElement) {
+        currentUserElement.textContent = currentUser;
+        userAvatarElement.textContent = createUserAvatar(currentUser);
+      }
+      
+      // تحميل البيانات الأولية
+      setTodayDate();
+      fetchDrivers();
+      fetchRecords();
+      
+      // إظهار رسالة ترحيبية
+      showMessage('success', `مرحباً ${currentUser}! تم تسجيل الدخول بنجاح`);
+    } else {
+      messageDiv.textContent = result.message || "بيانات الدخول غير صحيحة";
+      messageDiv.className = "alert alert-danger";
+      messageDiv.classList.remove('hidden');
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    messageDiv.textContent = "حدث خطأ في الاتصال بالخادم";
+    messageDiv.className = "alert alert-danger";
+    messageDiv.classList.remove('hidden');
+  } finally {
+    // إعادة زر التسجيل إلى حالته الأصلية
+    submitBtn.innerHTML = originalBtnText;
+    submitBtn.disabled = false;
+  }
+});
     
     // إرسال البيانات
     document.getElementById('dataForm').addEventListener('submit', function(e) {
@@ -1915,95 +2045,37 @@
     
     // زر تحديث السجلات
     document.getElementById('refreshBtn').addEventListener('click', function() {
-      fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
+      fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value);
       currentPage = 1;
       showMessage('success', "تم تحديث السجلات بنجاح");
+    });
+    
+    // زر البحث
+    document.getElementById('searchBtn').addEventListener('click', function() {
+      const certNumber = document.getElementById('searchInput').value.trim();
+      searchRecords(certNumber);
+    });
+    
+    // البحث عند الضغط على Enter
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        const certNumber = this.value.trim();
+        searchRecords(certNumber);
+      }
     });
     
     // تصفية السجلات حسب التاريخ
     document.getElementById('timeFilter').addEventListener('change', function() {
       const value = this.value;
-      fetchRecords(value, document.getElementById('statusFilter').value, document.getElementById('certNumberFilter').value);
+      fetchRecords(value, document.getElementById('statusFilter').value);
       currentPage = 1;
     });
     
     // تصفية السجلات حسب الحالة
     document.getElementById('statusFilter').addEventListener('change', function() {
       const value = this.value;
-      fetchRecords(document.getElementById('timeFilter').value, value, document.getElementById('certNumberFilter').value);
+      fetchRecords(document.getElementById('timeFilter').value, value);
       currentPage = 1;
-    });
-    
-    // بحث برقم الشهادة
-    document.getElementById('certNumberFilter').addEventListener('input', function() {
-      const value = this.value.trim();
-      fetchRecords(document.getElementById('timeFilter').value, document.getElementById('statusFilter').value, value);
-      currentPage = 1;
-    });
-    
-    // اختيار/إلغاء اختيار جميع السجلات
-    document.getElementById('selectAll').addEventListener('change', function() {
-      const checkboxes = document.querySelectorAll('.record-checkbox');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = this.checked;
-        const recordId = checkbox.dataset.id;
-        
-        if (this.checked && !selectedRecords.includes(recordId)) {
-          selectedRecords.push(recordId);
-        } else if (!this.checked) {
-          selectedRecords = selectedRecords.filter(id => id !== recordId);
-        }
-      });
-      
-      updateSelectedCount();
-    });
-    
-    // زر الإجراء الجماعي
-    document.getElementById('bulkActionBtn').addEventListener('click', function() {
-      document.getElementById('selectAll').checked = false;
-      const checkboxes = document.querySelectorAll('.record-checkbox');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-      });
-      
-      selectedRecords = [];
-      updateSelectedCount();
-    });
-    
-    // زر الموافقة الجماعية
-    document.getElementById('bulkApproveBtn').addEventListener('click', function() {
-      if (selectedRecords.length === 0) {
-        showMessage('warning', "الرجاء تحديد سجلات للموافقة عليها");
-        return;
-      }
-      
-      showActionConfirmation('الموافقة الجماعية', `هل أنت متأكد من الموافقة على ${selectedRecords.length} سجلات؟`, () => {
-        updateBulkRecordsStatus(selectedRecords, 'معتمد');
-      });
-    });
-    
-    // زر الرفض الجماعي
-    document.getElementById('bulkRejectBtn').addEventListener('click', function() {
-      if (selectedRecords.length === 0) {
-        showMessage('warning', "الرجاء تحديد سجلات للرفض");
-        return;
-      }
-      
-      showActionConfirmation('الرفض الجماعي', `هل أنت متأكد من رفض ${selectedRecords.length} سجلات؟`, () => {
-        updateBulkRecordsStatus(selectedRecords, 'مرفوض');
-      });
-    });
-    
-    // زر إلغاء الإجراء الجماعي
-    document.getElementById('bulkCancelBtn').addEventListener('click', function() {
-      document.getElementById('selectAll').checked = false;
-      const checkboxes = document.querySelectorAll('.record-checkbox');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-      });
-      
-      selectedRecords = [];
-      updateSelectedCount();
     });
     
     // إرسال تعديلات السجل
@@ -2014,21 +2086,62 @@
     
     // زر الموافقة على السجل
     document.getElementById('approveBtn').addEventListener('click', function() {
-      showActionConfirmation('الموافقة', 'هل أنت متأكد من الموافقة على هذا السجل؟', async () => {
-        const success = await updateRecordStatus(currentEditingRecord.uniqueId, 'معتمد');
-        if (success) {
-          document.getElementById('editModal').style.display = 'none';
-        }
+      showActionConfirmation('الموافقة', 'هل أنت متأكد من الموافقة على هذا السجل؟', () => {
+        updateRecordStatus('معتمد');
       });
     });
     
     // زر الرفض على السجل
     document.getElementById('rejectBtn').addEventListener('click', function() {
-      showActionConfirmation('الرفض', 'هل أنت متأكد من رفض هذا السجل؟', async () => {
-        const success = await updateRecordStatus(currentEditingRecord.uniqueId, 'مرفوض');
-        if (success) {
-          document.getElementById('editModal').style.display = 'none';
-        }
+      showActionConfirmation('الرفض', 'هل أنت متأكد من رفض هذا السجل؟', () => {
+        updateRecordStatus('مرفوض');
+      });
+    });
+    
+    // زر الموافقة على السجلات المحددة
+    document.getElementById('approveSelectedBtn').addEventListener('click', function() {
+      showActionConfirmation('الموافقة', `هل أنت متأكد من الموافقة على ${selectedRecords.length} سجل؟`, () => {
+        approveSelectedRecords();
+      });
+    });
+    
+    // زر رفض السجلات المحددة
+    document.getElementById('rejectSelectedBtn').addEventListener('click', function() {
+      showActionConfirmation('الرفض', `هل أنت متأكد من رفض ${selectedRecords.length} سجل؟`, () => {
+        rejectSelectedRecords();
+      });
+    });
+    
+    // زر إلغاء التحديد
+    document.getElementById('clearSelectionBtn').addEventListener('click', function() {
+      document.querySelectorAll('.record-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      selectedRecords = [];
+      document.getElementById('bulkActions').style.display = 'none';
+      document.getElementById('selectAllCheckbox').checked = false;
+    });
+    
+    // تحديد/إلغاء تحديد جميع السجلات
+    document.getElementById('selectAllCheckbox').addEventListener('change', function() {
+      const checkboxes = document.querySelectorAll('.record-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+      });
+      
+      if (this.checked) {
+        selectedRecords = Array.from(document.querySelectorAll('tr[data-unique-id]')).map(row => row.dataset.uniqueId);
+      } else {
+        selectedRecords = [];
+      }
+      
+      updateBulkActions();
+    });
+    
+    // التبديل بين التبويبات
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        switchTab(this.dataset.tab);
       });
     });
     
@@ -2042,6 +2155,12 @@
     // تعيين تاريخ اليوم عند تحميل الصفحة
     window.onload = function() {
       setTodayDate();
+      
+      // إخفاء شاشة التحميل بعد ثانيتين (في حالة عدم وجود اتصال)
+      setTimeout(() => {
+        document.getElementById('loaderScreen').classList.add('hidden');
+        document.getElementById('loginScreen').classList.remove('hidden');
+      }, 2000);
     };
   </script>
 </body>
